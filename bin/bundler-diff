@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require 'bundler/diff'
+
+Bundler::Diff::CLI.run
