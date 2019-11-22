@@ -1,6 +1,7 @@
 require 'bundler'
 require 'rubygems'
 require 'rubygems/package'
+require 'optparse'
 require 'pathname'
 require 'tmpdir'
 
@@ -9,6 +10,8 @@ module Bundler::Diff::CLI
 
   def run(args=ARGV)
     Bundler.ui = Bundler::UI::Shell.new
+
+    args = option_parser.parse(args) unless args.empty?
 
     gem_name = args.first
 
@@ -34,6 +37,22 @@ module Bundler::Diff::CLI
 
   private
 
+  def options
+    @options ||= {
+      version: Gem::Requirement.default
+    }
+  end
+
+  def option_parser
+    OptionParser.new do |opts|
+      opts.banner = 'Usage: bundle diff GEMNAME [options]'
+
+      opts.on '-v', '--version VERSION', 'Specify version of gem to diff against' do |value|
+        options[:version] = Gem::Requirement.new(value)
+      end
+    end
+  end
+
   def installed_specs
     @installed_specs ||= Bundler.load.specs.each_with_object({}) do |spec, hash|
       next if ignore?(spec)
@@ -51,8 +70,8 @@ module Bundler::Diff::CLI
     end
   end
 
-  def fetch(name, target_dir, version: Gem::Requirement.default)
-    dependency = Gem::Dependency.new(name, version)
+  def fetch(name, target_dir)
+    dependency = Gem::Dependency.new(name, options[:version])
 
     specs_and_sources, errors = Gem::SpecFetcher.fetcher.spec_for_dependency(dependency)
 
