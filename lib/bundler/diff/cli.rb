@@ -47,6 +47,12 @@ module Bundler::Diff::CLI
     OptionParser.new do |opts|
       opts.banner = 'Usage: bundle diff GEMNAME [options]'
 
+      opts.on '-h', '--help' do
+        puts "#{opts}\n"
+
+        Kernel::exit
+      end
+
       opts.on '-v', '--version VERSION', 'Specify version of gem to diff against' do |value|
         options[:version] = Gem::Requirement.new(value)
       end
