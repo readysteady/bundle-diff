@@ -17,9 +17,9 @@ module Bundler::Diff::CLI
 
     error('gem name required') unless gem_name
 
-    installed_spec = installed_specs[gem_name]
+    bundled_spec = bundled_specs[gem_name]
 
-    error('gem spec not found') unless installed_spec
+    error('gem spec not found') unless bundled_spec
 
     Dir.mktmpdir do |tmp_dir|
       gem_spec = fetch(gem_name, tmp_dir)
@@ -27,8 +27,8 @@ module Bundler::Diff::CLI
       unpack(gem_spec, tmp_dir)
 
       tool = Bundler::Diff::Tool.new
-      tool.a_dir = Pathname(installed_spec.gem_dir)
-      tool.a_output_dir = Pathname(installed_spec.full_name)
+      tool.a_dir = Pathname(bundled_spec.gem_dir)
+      tool.a_output_dir = Pathname(bundled_spec.full_name)
       tool.b_dir = Pathname(tmp_dir).join(gem_spec.full_name)
       tool.b_output_dir = Pathname(gem_spec.full_name)
       tool.diff_entries
@@ -59,8 +59,8 @@ module Bundler::Diff::CLI
     end
   end
 
-  def installed_specs
-    @installed_specs ||= Bundler.load.specs.each_with_object({}) do |spec, hash|
+  def bundled_specs
+    @bundled_specs ||= Bundler.load.specs.each_with_object({}) do |spec, hash|
       next if ignore?(spec)
 
       hash[spec.name] = spec
