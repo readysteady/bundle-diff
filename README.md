@@ -10,6 +10,6 @@ Bundler plugin for showing diffs of bundled gems against latest versions.
 
 ## Usage
 
-    $ bundle diff GEM_NAME
+    $ bundle diff GEMNAME
 
 Tip: use `bundle outdated` to list installed gems with with newer versions available.
