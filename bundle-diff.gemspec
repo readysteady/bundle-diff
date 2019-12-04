@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'bundle-diff'
-  s.version = '1.1.0'
+  s.version = '1.2.0'
   s.license = 'GPL-3.0'
   s.platform = Gem::Platform::RUBY
   s.authors = ['Tim Craft']

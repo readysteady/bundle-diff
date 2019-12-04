@@ -1,3 +1,8 @@
+# 1.2.0
+
+* Optimized #run for when the version of the gem to diff against is installed locally
+
+
 # 1.1.0
 
 * Added version option
