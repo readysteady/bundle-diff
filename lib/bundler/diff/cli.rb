@@ -26,12 +26,9 @@ module Bundler::Diff::CLI
 
       unpack(gem_spec, tmp_dir)
 
-      tool = Bundler::Diff::Tool.new
-      tool.a_dir = Pathname(bundled_spec.gem_dir)
-      tool.a_output_dir = Pathname(bundled_spec.full_name)
-      tool.b_dir = Pathname(tmp_dir).join(gem_spec.full_name)
-      tool.b_output_dir = Pathname(gem_spec.full_name)
-      tool.diff_entries
+      def gem_spec.gem_dir; Pathname(tmp_dir).join(gem_spec.full_name); end
+
+      Bundler::Diff::Tool.diff(bundled_spec, gem_spec)
     end
   end
 

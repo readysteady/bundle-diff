@@ -9,6 +9,15 @@ class Bundler::Diff::Tool
   attr_accessor :b_dir
   attr_accessor :b_output_dir
 
+  def self.diff(a_spec, b_spec)
+    tool = new
+    tool.a_dir = Pathname(a_spec.gem_dir)
+    tool.a_output_dir = Pathname(a_spec.full_name)
+    tool.b_dir = Pathname(b_spec.gem_dir)
+    tool.b_output_dir = Pathname(b_spec.full_name)
+    tool.diff_entries
+  end
+
   def diff_entries
     a_files = file_list(a_dir)
     b_files = file_list(b_dir)
