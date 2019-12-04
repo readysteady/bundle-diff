@@ -21,8 +21,24 @@ module Bundler::Diff::CLI
 
     error('gem spec not found') unless bundled_spec
 
+    gem_dependency = Gem::Dependency.new(gem_name, options[:version])
+
+    specs_and_sources, errors = Gem::SpecFetcher.fetcher.spec_for_dependency(gem_dependency)
+
+    gem_spec, source = specs_and_sources.max_by { |s,| s.version }
+
+    error('gem spec not found') if gem_spec.nil?
+
+    installed_spec = Gem::Specification.find { |s| s.name == gem_spec.name && s.version == gem_spec.version }
+
+    if installed_spec
+      Bundler::Diff::Tool.diff(bundled_spec, installed_spec)
+
+      return
+    end
+
     Dir.mktmpdir do |tmp_dir|
-      gem_spec = fetch(gem_name, tmp_dir)
+      Dir.chdir(tmp_dir) { source.download(gem_spec) }
 
       unpack(gem_spec, tmp_dir)
 
@@ -71,20 +87,6 @@ module Bundler::Diff::CLI
     else
       false
     end
-  end
-
-  def fetch(name, target_dir)
-    dependency = Gem::Dependency.new(name, options[:version])
-
-    specs_and_sources, errors = Gem::SpecFetcher.fetcher.spec_for_dependency(dependency)
-
-    spec, source = specs_and_sources.max_by { |s,| s.version }
-
-    error('gem spec not found') if spec.nil?
-
-    Dir.chdir(target_dir) { source.download(spec) }
-
-    spec
   end
 
   def unpack(spec, tmp_dir)
