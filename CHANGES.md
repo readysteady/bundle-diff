@@ -1,3 +1,8 @@
+# 1.2.1
+
+* Fix bug introduced by 1.2.0 changes
+
+
 # 1.2.0
 
 * Optimized #run for when the version of the gem to diff against is installed locally
