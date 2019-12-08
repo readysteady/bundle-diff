@@ -42,7 +42,7 @@ module Bundler::Diff::CLI
 
       unpack(gem_spec, tmp_dir)
 
-      def gem_spec.gem_dir; Pathname(tmp_dir).join(gem_spec.full_name); end
+      gem_spec.define_singleton_method(:gem_dir) { Pathname(tmp_dir).join(gem_spec.full_name) }
 
       Bundler::Diff::Tool.diff(bundled_spec, gem_spec)
     end
