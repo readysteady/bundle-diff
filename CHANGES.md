@@ -1,3 +1,8 @@
+# 1.2.2
+
+* Fix for Ruby 2.3 and Ruby 2.4
+
+
 # 1.2.1
 
 * Fix bug introduced by 1.2.0 changes
