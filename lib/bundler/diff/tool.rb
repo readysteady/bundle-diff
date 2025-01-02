@@ -38,16 +38,20 @@ class Bundler::Diff::Tool
     command_for_output = ['diff']
 
     if a_path
-      command.concat [a_dir.join(a_path), '--label', Pathname('a').join(a_path)]
-      command_for_output << a_output_dir.join(a_path)
+      a_label = a_output_dir.join(a_path)
+
+      command.concat [a_dir.join(a_path), '--label', a_label]
+      command_for_output << a_label
     else
       command << null
       command_for_output << null
     end
 
     if b_path
-      command.concat [b_dir.join(b_path), '--label', Pathname('b').join(b_path)]
-      command_for_output << b_output_dir.join(b_path)
+      b_label = b_output_dir.join(b_path)
+
+      command.concat [b_dir.join(b_path), '--label', b_label]
+      command_for_output << b_label
     else
       command << null
       command_for_output << null
