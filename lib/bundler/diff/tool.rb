@@ -31,8 +31,6 @@ class Bundler::Diff::Tool
   end
 
   def diff(a_path, b_path)
-    null = '/dev/null'
-
     command = ['diff -u']
 
     command_for_output = ['diff']
@@ -43,8 +41,8 @@ class Bundler::Diff::Tool
       command.concat [a_dir.join(a_path), '--label', a_label]
       command_for_output << a_label
     else
-      command << null
-      command_for_output << null
+      command.concat ['/dev/null', '--label', '/dev/null']
+      command_for_output << '/dev/null'
     end
 
     if b_path
@@ -53,8 +51,8 @@ class Bundler::Diff::Tool
       command.concat [b_dir.join(b_path), '--label', b_label]
       command_for_output << b_label
     else
-      command << null
-      command_for_output << null
+      command << ['/dev/null', '--label', '/dev/null']
+      command_for_output << '/dev/null'
     end
 
     output = `#{command.join(' ')}`
