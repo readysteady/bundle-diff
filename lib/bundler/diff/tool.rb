@@ -63,19 +63,8 @@ class Bundler::Diff::Tool
 
   private
 
-  if Pathname.instance_methods.include?(:glob) # Ruby 2.5+
-    def glob(pathname)
-      pathname.glob('**/*')
-    end
-  else
-    def glob(pathname)
-      Dir.glob(File.join(pathname.to_s, '**', '*')).map { |path| Pathname(path) }
-    end
-  end
-
   def file_list(dir_path)
-    glob(dir_path).select(&:file?).map { |path|
-      path.relative_path_from(dir_path)
-    }.reject { |path| path.to_s.start_with?('ext/') }
+    paths = dir_path.glob('**/*').select(&:file?).map { |path| path.relative_path_from(dir_path) }
+    paths.reject { |path| path.to_s.start_with?('ext/') }
   end
 end
