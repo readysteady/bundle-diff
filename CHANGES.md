@@ -1,3 +1,12 @@
+# 2.0.0
+
+* **Required ruby version is now 3.0.0**
+
+* Changed diff labels to include gem directory names
+
+* Fixed diff labels for /dev/null
+
+
 # 1.2.2
 
 * Fix for Ruby 2.3 and Ruby 2.4
